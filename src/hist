@@ -1,0 +1,44 @@
+#! /usr/bin/python
+
+import fileinput
+
+data = []
+nbins = None
+
+for line in fileinput.input():
+  try:
+    x = float(line)
+    data.append(x)
+  except:
+    pass
+
+n = len(data)
+min = min(data)
+max = max(data)
+
+
+def bin(data,min,max):
+  # bin width
+  dx = (max - min)/n # number of bins *is* number of intervals
+  x = [ min + dx*(i+0.5) for i in range(n) ]
+  count = [0]*n
+
+  for d in data:
+    i = int( (d - min)/dx )
+    if i >= n:
+      i = n-1
+    count[i] += 1
+
+  return x,count
+
+
+
+# if the number of bins is not defined,
+# try to determine what the best bin count would be
+if nbins is None:
+  nbins = (n / 10)+1
+
+x,count = bin(data,min,max)
+
+for i in range(len(x)):
+  print x[i],count[i]

@@ -1,0 +1,67 @@
+#! /bin/bash
+
+# the getopt command is external to the shell. essentially what it
+# does is parse the command line parameters and rearrange them so
+# that all of the options are given before any of the arguments, and
+# adds a '--' between the options and arguments. 
+# then you can setup a while loop to process options easily and terminate
+# it when you run into the '--'
+
+# both long and short options can be given
+# short options are passed to -o
+# long  options are passed to -l
+# a colon (:) after an option means it has a required argument
+# two colons (::) after an option means it has a optional argument
+
+
+NEW_COMMAND_LINE=$(getopt -o r:m:o: -l pre:,modifiers:,post: -n '$(basename $0)' -- "$@")   # this creates a rearranged version of the command line
+if [ $? != 0 ] ; then echo "getopt returned an error, Terminating..." >&2 ; exit 1 ; fi
+eval set -- "$NEW_COMMAND_LINE"                                                                          # this sets up positional parameters to the new command line
+
+
+# now we can just manually loop through the positional parameters
+modifiers=""
+pre=""
+post=""
+while true ; do
+  case "$1" in
+    -m|--modifiers)
+        modifiers=$2
+        shift 2
+        ;;
+    -r|--pre)
+        pre=$2
+        shift 2
+        ;;
+    -o|--post)
+        post=$2
+        shift 2
+        ;;
+    --) shift ; break ;;
+     *) echo "Unreconized option got through: '$1'" ; exit 1 ;;
+  esac
+done
+
+cmd=$(basename $0)
+
+if [[ -n $1 ]]
+then
+  if [[ $1 == 'hist' || $1 == 'histogram' ]]
+  then
+    pre="$pre;unset key"
+    modifiers="$modifiers with boxes"
+  fi
+fi
+
+
+gnuplot -persist -e "$pre; $cmd '-' $modifiers; $post"
+
+
+
+
+
+
+
+
+
+

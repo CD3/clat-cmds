@@ -1,0 +1,27 @@
+#! /usr/bin/python
+
+import fileinput
+
+delim=' '
+sum = []
+num = []
+for line in fileinput.input():
+  fields = line.split(delim)
+  for i in range(len(fields)):
+    try:
+      x = float(fields[i])
+      if i == len(sum):
+        sum.append(0)
+      if i == len(num):
+        num.append(0)
+
+      sum[i] += x
+      num[i] += 1
+
+    except:
+      pass
+
+line = ""
+for i in range(len(sum)):
+  line += " " + str(sum[i]/num[i])
+print line.strip()
