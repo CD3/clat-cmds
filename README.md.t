@@ -8,3 +8,13 @@ A collection of simple scripts to help with doing data analysis at the command l
 the command line.  For example, there are scripts for calculating the average,
 standard deviation, and standard error of the mean.
 
+\shell{
+for s in src/*
+do
+echo "- \`$(basename $s)\`"
+echo
+echo '```'
+$s -h
+echo '```'
+done
+}
