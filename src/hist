@@ -6,7 +6,8 @@ import argparse
 
 parser = argparse.ArgumentParser(description="Create a histogram for a set of values.")
 
-parser.add_argument("--num-bins", "-n", help="Sets the number of bins that will be used. If not given, a reasonable bin number is automatically calculated.")
+parser.add_argument("--num-bins", "-n", type=int, help="Sets the number of bins that will be used. If not given, a reasonable bin number is automatically calculated.")
+parser.add_argument("--normalize", "-N", action='store_true', help="Normalizes the histogram so that it represents a probability distribution.")
 parser.add_argument("files", metavar="FILE", nargs="*", help="input files. stdin is used if no files are given.")
 args = parser.parse_args()
 
@@ -25,7 +26,7 @@ min = min(data)
 max = max(data)
 
 
-def bin(data,min,max):
+def bin(data,min,max,n):
   # bin width
   dx = (max - min)/n # number of bins *is* number of intervals
   x = [ min + dx*(i+0.5) for i in range(n) ]
@@ -47,7 +48,10 @@ nbins = args.num_bins
 if nbins is None:
   nbins = (n / 10)+1
 
-x,count = bin(data,min,max)
+x,count = bin(data,min,max,nbins)
+norm = 1
+if args.normalize:
+  norm = sum(count)*(max - min)/nbins
 
 for i in range(len(x)):
-  print x[i],count[i]
+  print x[i],count[i]/norm
