@@ -28,4 +28,4 @@ for line in fileinput.input(files=args.files if len(args.files) > 0  else ('-',)
 line = ""
 for i in range(len(sum)):
   line += " " + str(sum[i])
-print line.strip()
+print(line.strip())

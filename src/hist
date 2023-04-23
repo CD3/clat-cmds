@@ -54,4 +54,4 @@ if args.normalize:
   norm = sum(count)*(max - min)/nbins
 
 for i in range(len(x)):
-  print x[i],count[i]/norm
+  print(x[i],count[i]/norm)

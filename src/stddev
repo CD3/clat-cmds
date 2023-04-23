@@ -43,4 +43,4 @@ for i in range(len(sum)):
     if not args.biased:
       N = N - 1
     line += " " + str(math.sqrt(sum[i]/N))
-print line.strip()
+print(line.strip())

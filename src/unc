@@ -40,4 +40,4 @@ for i in range(len(sum)):
     line += "nan"
   else:
     line += " " + str(math.sqrt(sum[i]/(num[i]-1))/math.sqrt(num[i]))
-print line.strip()
+print(line.strip())
